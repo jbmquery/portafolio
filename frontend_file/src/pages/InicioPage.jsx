@@ -1,6 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 function InicioPage() {
+  
+  const [proyectos, setProyectos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+  const fetchProyectos = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/proyectos');
+      if (!res.ok) throw new Error('Error al cargar los proyectos');
+      const data = await res.json();
+      setProyectos(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProyectos();
+}, []);  
+
   return (
     <div>
         {/* BOTON FLOTANTE */}
@@ -238,83 +260,53 @@ function InicioPage() {
                 <button className="btn btn-outline text-xs md:text-base">Minería</button>
             </div>
             {/* Proyectos*/}
-            <div className='flex flex-row flex-wrap justify-center gap-2 md:gap-5 py-10 px-3 mb-10'>
-                {/* Ejemplo 1*/}
-                <div className="max-w-3xs md:max-w-xs rounded overflow-hidden shadow-lg bg-primary-content rounded-lg shadow-lg">
-                    <img className="w-" src="https://i.ibb.co/PzvZf1wS/corporativas.webp" alt="proyecto1"/>
-                    <div className="px-2 py-2 md:px-5 md:py-3">
-                        <div className="font-bold text-xl mb-2 text-secondary text-sm md:text-xl">Empresa Santa Fe</div>
-                        <p className="text-gray-700 text-xs md:text-base">
-                        Reducción de costos usando la metodologia cash cash, presentación de dashboard para toma de decisiones
-                        </p>
-                    </div>
-                    <div className="px-2 py-2 md:px-5 md:py-3">
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#PowerBI</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#SQL</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#Python</span>
-                    </div>
-                </div>
-                {/* Ejemplo 2*/}
-                <div className="max-w-3xs md:max-w-xs rounded overflow-hidden shadow-lg bg-primary-content rounded-lg shadow-lg">
-                    <img className="w-" src="https://i.ibb.co/PzvZf1wS/corporativas.webp" alt="proyecto1"/>
-                    <div className="px-2 py-2 md:px-5 md:py-3">
-                        <div className="font-bold text-xl mb-2 text-secondary text-sm md:text-xl">Empresa Santa Fe</div>
-                        <p className="text-gray-700 text-xs md:text-base">
-                        Reducción de costos usando la metodologia cash cash, presentación de dashboard para toma de decisiones
-                        </p>
-                    </div>
-                    <div className="px-2 py-2 md:px-5 md:py-3">
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#PowerBI</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#SQL</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#Python</span>
-                    </div>
-                </div>
-                {/* Ejemplo 3*/}
-                <div className="max-w-3xs md:max-w-xs rounded overflow-hidden shadow-lg bg-primary-content rounded-lg shadow-lg">
-                    <img className="w-" src="https://i.ibb.co/PzvZf1wS/corporativas.webp" alt="proyecto1"/>
-                    <div className="px-2 py-2 md:px-5 md:py-3">
-                        <div className="font-bold text-xl mb-2 text-secondary text-sm md:text-xl">Empresa Santa Fe</div>
-                        <p className="text-gray-700 text-xs md:text-base">
-                        Reducción de costos usando la metodologia cash cash, presentación de dashboard para toma de decisiones
-                        </p>
-                    </div>
-                    <div className="px-2 py-2 md:px-5 md:py-3">
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#PowerBI</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#SQL</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#Python</span>
-                    </div>
-                </div>
-                {/* Ejemplo 4*/}
-                <div className="max-w-3xs md:max-w-xs rounded overflow-hidden shadow-lg bg-primary-content rounded-lg shadow-lg">
-                    <img className="w-" src="https://i.ibb.co/PzvZf1wS/corporativas.webp" alt="proyecto1"/>
-                    <div className="px-2 py-2 md:px-5 md:py-3">
-                        <div className="font-bold text-xl mb-2 text-secondary text-sm md:text-xl">Empresa Santa Fe</div>
-                        <p className="text-gray-700 text-xs md:text-base">
-                        Reducción de costos usando la metodologia cash cash, presentación de dashboard para toma de decisiones
-                        </p>
-                    </div>
-                    <div className="px-2 py-2 md:px-5 md:py-3">
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#PowerBI</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#SQL</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#Python</span>
-                    </div>
-                </div>
-                {/* Ejemplo 5*/}
-                <div className="max-w-3xs md:max-w-xs rounded overflow-hidden shadow-lg bg-primary-content rounded-lg shadow-lg">
-                    <img className="w-" src="https://i.ibb.co/PzvZf1wS/corporativas.webp" alt="proyecto1"/>
-                    <div className="px-2 py-2 md:px-5 md:py-3">
-                        <div className="font-bold text-xl mb-2 text-secondary text-sm md:text-xl">Empresa Santa Fe</div>
-                        <p className="text-gray-700 text-xs md:text-base">
-                        Reducción de costos usando la metodologia cash cash, presentación de dashboard para toma de decisiones
-                        </p>
-                    </div>
-                    <div className="px-2 py-2 md:px-5 md:py-3">
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#PowerBI</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#SQL</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">#Python</span>
-                    </div>
-                </div>
-            </div>
+            {/* Proyectos dinámicos */}
+<div className='flex flex-row flex-wrap justify-center gap-2 md:gap-5 py-10 px-3 mb-10'>
+  {loading ? (
+    <p className="text-white">Cargando proyectos...</p>
+  ) : error ? (
+    <p className="text-red-400">❌ {error}</p>
+  ) : proyectos.length === 0 ? (
+    <p className="text-white">No hay proyectos disponibles.</p>
+  ) : (
+    proyectos.map((proyecto) => (
+      <div
+        key={proyecto.id}
+        className="max-w-3xs md:max-w-xs rounded overflow-hidden shadow-lg bg-primary-content rounded-lg shadow-lg"
+      >
+        {proyecto.miniatura ? (
+          <img
+            src={proyecto.miniatura}
+            alt={proyecto.titulo}
+            className="w-full h-48 object-cover"
+          />
+        ) : (
+          <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+            <span className="text-gray-500">Sin imagen</span>
+          </div>
+        )}
+        <div className="px-2 py-2 md:px-5 md:py-3">
+          <div className="font-bold text-xl mb-2 text-secondary text-sm md:text-xl">
+            {proyecto.titulo}
+          </div>
+          <p className="text-gray-700 text-xs md:text-base">
+            {proyecto.breve_descripcion}
+          </p>
+        </div>
+        <div className="px-2 py-2 md:px-5 md:py-3">
+          {proyecto.hashtags.map((tag, i) => (
+            <span
+              key={i}
+              className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    ))
+  )}
+</div>
         </div>
         {/* Contacto */}
         <footer id="contacto" className="footer footer-horizontal footer-center bg-base text-primary-content p-10">

@@ -13,6 +13,6 @@ def login():
 
     user = AdminUser.query.filter_by(email=email).first()
     if user and user.check_password(password):
-        token = create_access_token(identity=user.id)
+        token = create_access_token(identity=str(user.id))
         return jsonify(access_token=token), 200
     return jsonify({"msg": "Credenciales inválidas"}), 401
