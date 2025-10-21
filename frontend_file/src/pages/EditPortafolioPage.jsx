@@ -164,7 +164,7 @@ function EditPortafolioPage() {
         const res = await fetch('http://localhost:5000/api/proyectos');
         if (res.ok) setProjects(await res.json());
       } else {
-        setMessage(`❌ Error: ${result.msg || 'Falló la operación'}`);
+        setMessage(`❌❌ Error: ${result.msg || 'Falló la operación'}`);
       }
     } catch (error) {
       setMessage('❌ Error de conexión con el servidor');
