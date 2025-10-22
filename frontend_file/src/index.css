@@ -6,4 +6,3 @@
 @plugin "daisyui" {
   themes: dark --default, black --prefersdark, cupcake, dracula;
 }
-

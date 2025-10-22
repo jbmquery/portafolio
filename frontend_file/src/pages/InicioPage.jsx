@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Aurora from '../components/Aurora';
 
 function InicioPage() {
   
@@ -35,15 +36,15 @@ function InicioPage() {
     <div>
         {/* BOTON FLOTANTE */}
         <div className="fab">
-            <button className="btn btn-xl btn-circle btn-primary bg-green-500">
+            <a className="btn btn-xl btn-circle btn-primary bg-green-500" href="https://wa.me/51931530445?text=Hola%20Jheferson,%20vi%20tu%20portafolio%20y%20me%20gustaría%20conversar%20contigo." target="_blank">
                 <svg width={40} height={40} fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path fillRule="evenodd" d="M19.44 4.552A10.413 10.413 0 0 0 12.044 1.5C6.281 1.5 1.59 6.168 1.588 11.906a10.341 10.341 0 0 0 1.396 5.203L1.5 22.5l5.543-1.447a10.483 10.483 0 0 0 4.997 1.266h.004c5.762 0 10.453-4.669 10.456-10.407a10.32 10.32 0 0 0-3.06-7.36Zm-7.396 16.01h-.004a8.706 8.706 0 0 1-4.423-1.205l-.317-.188-3.29.859.879-3.192-.207-.328a8.6 8.6 0 0 1-1.329-4.602c0-4.768 3.9-8.648 8.694-8.648a8.672 8.672 0 0 1 8.688 8.655c-.002 4.769-3.9 8.65-8.69 8.65Zm4.767-6.477c-.261-.13-1.547-.76-1.785-.847-.238-.086-.414-.13-.588.13-.174.261-.675.845-.827 1.02-.153.176-.305.195-.566.065-.261-.13-1.104-.404-2.102-1.29-.776-.69-1.3-1.541-1.453-1.801-.152-.26-.016-.402.115-.531.117-.117.26-.304.392-.456.13-.152.174-.26.26-.434.087-.173.044-.325-.02-.455-.066-.13-.589-1.41-.806-1.93-.213-.508-.428-.439-.588-.447-.152-.007-.328-.01-.501-.01a.962.962 0 0 0-.697.326c-.24.26-.914.89-.914 2.17 0 1.278.937 2.516 1.067 2.69.129.173 1.842 2.799 4.463 3.925.486.209.984.392 1.49.548.625.198 1.195.17 1.645.103.502-.075 1.546-.63 1.764-1.237.217-.607.217-1.127.152-1.236-.065-.108-.24-.174-.501-.303Z" clipRule="evenodd" />
                 </svg>
-            </button>
+            </a>
 
         </div>
       {/* NavBar fija en la parte superior */}
-      <div className="navbar bg-base-100 shadow-sm sticky top-0 z-10">
+      <div className="navbar sticky top-0 z-20 bg-white/5 backdrop-blur-md">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl"><img className='h-10 w-10 md:h-13 md:w-13' src="https://i.ibb.co/1fKyz9g0/logo-jbm.webp" alt="" /></a>
         </div>
@@ -52,7 +53,7 @@ function InicioPage() {
             <li>
               <details>
                 <summary>Sobre mí</summary>
-                <ul className="bg-base-100 rounded-t-none p-2">
+                <ul className="bg-white/10 backdrop-blur-md rounded-t-none p-2">
                   <li><a href='#presentacion'>Presentación</a></li>
                   <li><a href='#herramientas'>Herramientas</a></li>
                   <li><a href='#portafolio'>Portafolio</a></li>
@@ -65,21 +66,36 @@ function InicioPage() {
         </div>
       </div>
 
-      {/* Hero con fondo */}
-      <div
-        className="hero min-h-screen bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% ...">
-        <div className="hero-content text-neutral-content text-center">
-          <div className="md:max-w-4xl">
-            <img className="h-36 w-36 md:h-56 md:w-56 mx-auto mb-6" 
-                src="https://i.ibb.co/1fKyz9g0/logo-jbm.webp" alt="" />
-            <p>___________</p>
-            <br />
-            <p className="mb-5 text-md md:text-3xl italic">
-              “<b>Analista de Datos con formación en Ingeniería de Sistemas</b> y certificaciones en análisis de datos y herramientas como SQL, Python y Power BI. Experiencia en optimización de procesos y generación de insights para la toma de decisiones”
-            </p>
-          </div>
+    {/* Hero con efecto Aurora */}
+    <div className="relative min-h-screen w-full overflow-hidden">
+    {/* Fondo animado */}
+    <div className="absolute inset-0 z-0">
+        <Aurora
+        colorStops={['#3A29FF', '#FF94B4', '#FF3232']}
+        blend={0.5}
+        amplitude={1.0}
+        speed={0.5}
+        />
+    </div>
+
+    {/* Contenido encima */}
+    <div className="hero relative z-10 text-neutral-content text-center">
+        <div className="hero-content">
+            <div className="md:max-w-4xl">
+                <img
+                className="h-36 w-36 md:h-56 md:w-56 mx-auto mb-6 mt-15"
+                src="https://i.ibb.co/1fKyz9g0/logo-jbm.webp"
+                alt="Logo"
+                />
+                <p>___________</p>
+                <br />
+                <p className="mb-5 text-md md:text-3xl italic">
+                “<b>Analista de Datos con formación en Ingeniería de Sistemas</b> y certificaciones en análisis de datos y herramientas como SQL, Python y Power BI. Experiencia en optimización de procesos y generación de insights para la toma de decisiones”
+                </p>
+            </div>
         </div>
-      </div>
+    </div>
+    </div>
 
       {/* Perfil */}
         <div id="presentacion" className="hero bg-base-200 min-h-screen">

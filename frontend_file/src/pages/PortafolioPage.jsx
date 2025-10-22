@@ -63,7 +63,7 @@ function PortafolioPage() {
       </div>
 
       {/* NavBar */}
-      <div className="navbar bg-base-100 shadow-sm sticky top-0 z-10">
+      <div className="navbar sticky top-0 z-20 bg-black/20 backdrop-blur-md">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl">
             <img className='h-10 w-10 md:h-13 md:w-13' src="https://i.ibb.co/1fKyz9g0/logo-jbm.webp" alt="Logo" />
@@ -206,7 +206,7 @@ function PortafolioPage() {
         </div>
         //
         {/* Analisis */}
-        <div className="max-w-6xl mx-auto px-4 mt-10 text-center">
+        <div className="max-w-6xl mx-auto px-4 mt-10 text-center mb-20">
           <h2 className="text-secondary  mb-3 text-lg font-bold mt-6">Análisis</h2>
           <div
             className="text-left text-black max-w-none"
