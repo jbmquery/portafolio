@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import TextAlign from '@tiptap/extension-text-align';
+import { Color } from '@tiptap/extension-color';
+import { TextStyle } from '@tiptap/extension-text-style';
 
 function EditPortafolioPage() {
   const [projects, setProjects] = useState([]);
@@ -19,21 +22,37 @@ function EditPortafolioPage() {
   const [newHashtag, setNewHashtag] = useState('');
   const [message, setMessage] = useState('');
 
+  // Configuración común de extensiones
+  const commonExtensions = [
+    StarterKit.configure({
+      heading: false, // desactivamos headings si no los usas
+      bulletList: true,
+      orderedList: true,
+      listItem: true,
+    }),
+    TextAlign.configure({
+      types: ['paragraph', 'heading'],
+      alignments: ['left', 'center', 'right', 'justify'],
+    }),
+    TextStyle,
+    Color.configure({ types: [TextStyle.name] }),
+  ];
+
   // Editor para descripción
   const descripcionEditor = useEditor({
-    extensions: [StarterKit],
+    extensions: commonExtensions,
     content: '',
     onUpdate: ({ editor }) => {
-      setFormData(prev => ({ ...prev, descripcion: editor.getHTML() }));
+      setFormData((prev) => ({ ...prev, descripcion: editor.getHTML() }));
     },
   });
 
   // Editor para análisis
   const analisisEditor = useEditor({
-    extensions: [StarterKit],
+    extensions: commonExtensions,
     content: '',
     onUpdate: ({ editor }) => {
-      setFormData(prev => ({ ...prev, analisis: editor.getHTML() }));
+      setFormData((prev) => ({ ...prev, analisis: editor.getHTML() }));
     },
   });
 
@@ -73,7 +92,7 @@ function EditPortafolioPage() {
             enlace_herramienta: data.enlace_herramienta || '',
             enlace_github: data.enlace_github || '',
             hashtags: data.hashtags,
-            medios: data.medios.map(m => ({ url: m.url, tipo: m.tipo })),
+            medios: data.medios.map((m) => ({ url: m.url, tipo: m.tipo })),
           });
           if (descripcionEditor) descripcionEditor.commands.setContent(data.descripcion || '');
           if (analisisEditor) analisisEditor.commands.setContent(data.analisis || '');
@@ -114,7 +133,7 @@ function EditPortafolioPage() {
   };
 
   const removeHashtag = (tag) => {
-    setFormData({ ...formData, hashtags: formData.hashtags.filter(h => h !== tag) });
+    setFormData({ ...formData, hashtags: formData.hashtags.filter((h) => h !== tag) });
   };
 
   const addMedia = () => {
@@ -152,7 +171,7 @@ function EditPortafolioPage() {
         method,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
@@ -170,6 +189,121 @@ function EditPortafolioPage() {
       setMessage('❌ Error de conexión con el servidor');
       console.error(error);
     }
+  };
+
+  // Función para renderizar la barra de herramientas
+  const renderToolbar = (editor) => {
+    if (!editor) return null;
+
+    return (
+      <div className="flex flex-wrap gap-1 p-2 border rounded-t bg-base-200">
+        {/* Negrita, Cursiva */}
+        <button
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          className={editor.isActive('bold') ? 'btn btn-xs btn-primary' : 'btn btn-xs'}
+          title="Negrita"
+        >
+          <strong>B</strong>
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          className={editor.isActive('italic') ? 'btn btn-xs btn-primary' : 'btn btn-xs'}
+          title="Cursiva"
+        >
+          <em>I</em>
+        </button>
+
+        {/* Alineación */}
+        <div className="divider divider-horizontal mx-1"></div>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign('left').run()}
+          className={editor.isActive({ textAlign: 'left' }) ? 'btn btn-xs btn-primary' : 'btn btn-xs'}
+          title="Alinear izquierda"
+        >
+          ⇦
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign('center').run()}
+          className={editor.isActive({ textAlign: 'center' }) ? 'btn btn-xs btn-primary' : 'btn btn-xs'}
+          title="Centrar"
+        >
+          ⇵
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign('right').run()}
+          className={editor.isActive({ textAlign: 'right' }) ? 'btn btn-xs btn-primary' : 'btn btn-xs'}
+          title="Alinear derecha"
+        >
+          ⇨
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign('justify').run()}
+          className={editor.isActive({ textAlign: 'justify' }) ? 'btn btn-xs btn-primary' : 'btn btn-xs'}
+          title="Justificar"
+        >
+          ⇳
+        </button>
+
+        {/* Listas */}
+        <div className="divider divider-horizontal mx-1"></div>
+        <button
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={editor.isActive('bulletList') ? 'btn btn-xs btn-primary' : 'btn btn-xs'}
+          title="Viñetas"
+        >
+          •
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          className={editor.isActive('orderedList') ? 'btn btn-xs btn-primary' : 'btn btn-xs'}
+          title="Numeración"
+        >
+          1.
+        </button>
+
+        {/* Sangría */}
+        <div className="divider divider-horizontal mx-1"></div>
+        <button
+          onClick={() => editor.chain().focus().sinkListItem('listItem').run()}
+          disabled={!editor.can().sinkListItem('listItem')}
+          className="btn btn-xs"
+          title="Aumentar sangría"
+        >
+          ▸
+        </button>
+        <button
+          onClick={() => editor.chain().focus().liftListItem('listItem').run()}
+          disabled={!editor.can().liftListItem('listItem')}
+          className="btn btn-xs"
+          title="Disminuir sangría"
+        >
+          ◂
+        </button>
+
+        {/* Color de texto */}
+        <div className="divider divider-horizontal mx-1"></div>
+        <select
+          value=""
+          onChange={(e) => {
+            const color = e.target.value;
+            if (color === 'default') {
+              editor.chain().focus().unsetColor().run();
+            } else {
+              editor.chain().focus().setColor(color).run();
+            }
+          }}
+          className="select select-xs w-auto"
+        >
+          <option value="" disabled>
+            Color
+          </option>
+          <option value="default">Predeterminado</option>
+          <option value="black">Negro</option>
+          <option value="#1d4ed8">Primario (blue-700)</option>
+          <option value="#0d9488">Secundario (teal-600)</option>
+        </select>
+      </div>
+    );
   };
 
   return (
@@ -231,13 +365,21 @@ function EditPortafolioPage() {
         {/* Descripción */}
         <div>
           <label className="block mb-2">Descripción</label>
-          <EditorContent editor={descripcionEditor} className="border p-4 min-h-32" />
+          {renderToolbar(descripcionEditor)}
+          <EditorContent
+            editor={descripcionEditor}
+            className="border p-4 min-h-32 rounded-b"
+          />
         </div>
 
         {/* Análisis */}
         <div>
           <label className="block mb-2">Análisis</label>
-          <EditorContent editor={analisisEditor} className="border p-4 min-h-32" />
+          {renderToolbar(analisisEditor)}
+          <EditorContent
+            editor={analisisEditor}
+            className="border p-4 min-h-32 rounded-b"
+          />
         </div>
 
         {/* Hashtags */}
