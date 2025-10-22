@@ -14,8 +14,8 @@ function InicioPage() {
   const fetchProyectos = async () => {
     try {
       const url = categoriaFiltro === 'Todos'
-        ? 'http://localhost:5000/api/proyectos'
-        : `http://localhost:5000/api/proyectos?categoria=${categoriaFiltro}`;
+        ? `${import.meta.env.VITE_API_BASE_URL}/api/proyectos`
+        : `${import.meta.env.VITE_API_BASE_URL}/api/proyectos?categoria=${categoriaFiltro}`;
       
       const res = await fetch(url);
       if (!res.ok) throw new Error('Error al cargar los proyectos');

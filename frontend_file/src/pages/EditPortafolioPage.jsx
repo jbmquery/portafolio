@@ -60,7 +60,7 @@ function EditPortafolioPage() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/proyectos');
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/proyectos`);
         if (res.ok) {
           const data = await res.json();
           setProjects(data);
@@ -81,7 +81,7 @@ function EditPortafolioPage() {
 
     const loadProject = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/proyectos/${selectedProjectId}`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/proyectos/${selectedProjectId}`);
         if (res.ok) {
           const data = await res.json();
           setFormData({
@@ -164,7 +164,7 @@ function EditPortafolioPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/proyectos/${selectedProjectId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/proyectos/${selectedProjectId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -176,7 +176,7 @@ function EditPortafolioPage() {
         setMessage('✅ Proyecto eliminado con éxito.');
         resetForm();
         // Recargar lista de proyectos
-        const res = await fetch('http://localhost:5000/api/proyectos');
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/proyectos`);
         if (res.ok) setProjects(await res.json());
       } else {
         setMessage(`❌ Error: ${result.msg || 'No se pudo eliminar'}`);
@@ -200,8 +200,8 @@ function EditPortafolioPage() {
     }
 
     const url = selectedProjectId
-      ? `http://localhost:5000/api/proyectos/${selectedProjectId}`
-      : 'http://localhost:5000/api/proyectos';
+      ? `${import.meta.env.VITE_API_BASE_URL}/api/proyectos/${selectedProjectId}`
+      : `${import.meta.env.VITE_API_BASE_URL}/api/proyectos`;
     const method = selectedProjectId ? 'PUT' : 'POST';
 
     try {
@@ -218,7 +218,7 @@ function EditPortafolioPage() {
       if (response.ok) {
         setMessage(`✅ ${selectedProjectId ? 'Proyecto actualizado' : 'Proyecto creado'} con éxito.`);
         resetForm();
-        const res = await fetch('http://localhost:5000/api/proyectos');
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/proyectos`);
         if (res.ok) setProjects(await res.json());
       } else {
         setMessage(`❌❌ Error: ${result.msg || 'Falló la operación'}`);
