@@ -105,3 +105,10 @@ def actualizar_proyecto(id):
 
     db.session.commit()
     return jsonify({"msg": "Proyecto actualizado"}), 200
+
+@jwt_required()
+def eliminar_proyecto(id):
+    p = Proyecto.query.get_or_404(id)
+    db.session.delete(p)
+    db.session.commit()
+    return jsonify({"msg": "Proyecto eliminado"}), 200

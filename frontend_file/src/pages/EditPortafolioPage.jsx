@@ -151,6 +151,44 @@ function EditPortafolioPage() {
     setFormData({ ...formData, medios: newMedios });
   };
 
+  const handleDelete = async () => {
+    if (!selectedProjectId) return;
+    if (!window.confirm('¿Estás seguro de que deseas eliminar este proyecto? Esta acción no se puede deshacer.')) {
+      return;
+    }
+
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      setMessage('❌ No estás autenticado.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/proyectos/${selectedProjectId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        setMessage('✅ Proyecto eliminado con éxito.');
+        resetForm();
+        // Recargar lista de proyectos
+        const res = await fetch('http://localhost:5000/api/proyectos');
+        if (res.ok) setProjects(await res.json());
+      } else {
+        setMessage(`❌ Error: ${result.msg || 'No se pudo eliminar'}`);
+      }
+    } catch (error) {
+      setMessage('❌ Error de conexión al eliminar el proyecto');
+      console.error(error);
+    }
+  };
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
@@ -463,7 +501,17 @@ function EditPortafolioPage() {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        {selectedProjectId && (
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="btn btn-error align-middle mr-2"
+          >
+            ❌ Eliminar
+          </button>
+        )}
+
+        <button type="submit" className="btn btn-primary align-middle">
           {selectedProjectId ? 'Actualizar Proyecto' : 'Crear Proyecto'}
         </button>
       </form>
