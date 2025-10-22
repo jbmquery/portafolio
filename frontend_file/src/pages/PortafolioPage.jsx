@@ -156,13 +156,6 @@ function PortafolioPage() {
               className="text-left text-black max-w-none"
               dangerouslySetInnerHTML={{ __html: proyecto.descripcion || '' }}
             />
-
-            <h2 className="text-secondary  mb-3 text-lg font-bold mt-6">Análisis</h2>
-            <div
-              className="text-left text-black max-w-none"
-              dangerouslySetInnerHTML={{ __html: proyecto.analisis || '' }}
-            />
-
             {/* Enlaces */}
             <h2 className="text-secondary mb-3 text-lg font-bold mt-6">Recursos</h2>
             <div className="flex flex-wrap gap-2">
@@ -210,6 +203,15 @@ function PortafolioPage() {
               ))}
             </div>
           </div>
+        </div>
+        //
+        {/* Analisis */}
+        <div className="max-w-6xl mx-auto px-4 mt-10 text-center">
+          <h2 className="text-secondary  mb-3 text-lg font-bold mt-6">Análisis</h2>
+          <div
+            className="text-left text-black max-w-none"
+            dangerouslySetInnerHTML={{ __html: proyecto.analisis || '' }}
+          />
         </div>
       </div>
     </div>
