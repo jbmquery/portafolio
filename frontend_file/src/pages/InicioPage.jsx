@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function InicioPage() {
   
   const [proyectos, setProyectos] = useState([]);
+  const [categoriaFiltro, setCategoriaFiltro] = useState('Todos');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
   const fetchProyectos = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/proyectos');
+      const url = categoriaFiltro === 'Todos'
+        ? 'http://localhost:5000/api/proyectos'
+        : `http://localhost:5000/api/proyectos?categoria=${categoriaFiltro}`;
+      
+      const res = await fetch(url);
       if (!res.ok) throw new Error('Error al cargar los proyectos');
       const data = await res.json();
       setProyectos(data);
@@ -20,8 +27,9 @@ function InicioPage() {
     }
   };
 
+  setLoading(true);
   fetchProyectos();
-}, []);  
+}, [categoriaFiltro]); // ← se ejecuta cuando cambia la categoría 
 
   return (
     <div>
@@ -253,12 +261,21 @@ function InicioPage() {
                 <p>_______</p>
             </div>
             {/* Categorias */}
-            <div className='flex flex-row flex-wrap justify-center gap-2'>
-                <button className="btn btn-outline text-xs md:text-base">Todos</button>
-                <button className="btn btn-outline text-xs md:text-base">Finanzas</button>
-                <button className="btn btn-outline text-xs md:text-base">Retail</button>
-                <button className="btn btn-outline text-xs md:text-base">Minería</button>
-            </div>
+<div className='flex flex-row flex-wrap justify-center gap-2 mb-6'>
+  {['Todos', 'Finanzas', 'Retail', 'Minería'].map((cat) => (
+    <button
+      key={cat}
+      className={`btn text-xs md:text-base ${
+        categoriaFiltro === cat
+          ? 'btn-primary text-white' // activo
+          : 'btn-outline'            // inactivo
+      }`}
+      onClick={() => setCategoriaFiltro(cat)}
+    >
+      {cat}
+    </button>
+  ))}
+</div>
             {/* Proyectos*/}
             {/* Proyectos dinámicos */}
 <div className='flex flex-row flex-wrap justify-center gap-2 md:gap-5 py-10 px-3 mb-10'>
@@ -272,7 +289,8 @@ function InicioPage() {
     proyectos.map((proyecto) => (
       <div
         key={proyecto.id}
-        className="max-w-3xs md:max-w-xs rounded overflow-hidden shadow-lg bg-primary-content rounded-lg shadow-lg"
+        className="max-w-3xs md:max-w-xs rounded overflow-hidden shadow-lg bg-primary-content rounded-lg shadow-lg cursor-pointer hover:scale-105 transition-transform"
+        onClick={() => navigate(`/detalle-portafolio/${proyecto.id}`)}
       >
         {proyecto.miniatura ? (
           <img
